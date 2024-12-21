@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="Donbang management system">
+    <meta name="keywords" content="Donbang, pig, cow">
+    <meta name="author" content="PING">
+    <title>축산의사결정시스템</title>
+    <link rel="apple-touch-icon" href="/static/app-assets/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/static/app-assets/images/ico/favicon.png">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
+
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/vendors/css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/vendors/css/tables/datatable/datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css">
+    <!-- END: Vendor CSS-->
+
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/components.css">
+    <!-- END: Theme CSS-->
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/core/colors/palette-gradient.css">
+    <!-- END: Page CSS-->
+
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/assets/css/style.css">
+    <!-- END: Custom CSS-->
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body class="vertical-layout vertical-menu 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns">
+
+    <!-- BEGIN: Header-->
+    <%- include('../common/header_menu') %>
+    <!-- END: Header-->
+
+    <!-- BEGIN: Main Menu-->
+    <%- include('../common/main_menu') %>
+    
+    <!-- END: Main Menu-->
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+                <div class="content-header-left col-md-6 col-12 mb-2">
+                    <h3 class="content-header-title">질문등록</h3>
+                </div>                
+            </div>
+            <div class="content-body">
+                <section id="search-api">
+                                
+                    <div class="row">
+                       
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="projectinput2">제목</label>
+                                <input type="text"  id="title" 
+                                class="form-control" placeholder="" name="title" value="">
+                            </div>
+                            <div class="form-group">
+                                <label for="projectinput2">질문</label>
+                                <input type="text"  style="width: 450px; height: 300px;" id="contents" 
+                                class="form-control" placeholder="" name="contents" value="">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="form-actions text-center">
+                            <button type="button" class="btn btn-warning mr-1" onclick="clear()">
+                                <i class="ft-x"></i> Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary" onclick="AjaxBBSInsert();">
+                                <i class="la la-check-square-o"></i> Save
+                            </button>
+                        </div>
+                    </div>
+                </section>
+                <!--/ Search API (regular expressions) table -->
+
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+    <!-- BEGIN: Footer-->
+    
+    <%- include('../common/footer') %>
+    <!-- END: Footer-->
+
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="/static/app-assets/vendors/js/vendors.min.js"></script>
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="/static/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+    <script src="/static/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="/static/app-assets/js/core/app-menu.js"></script>
+    <script src="/static/app-assets/js/core/app.js"></script>
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->
+    <script src="/static/app-assets/js/scripts/tables/datatables/datatable-api.js"></script>
+    <!-- END: Page JS-->
+
+</body>
+<!-- END: Body-->
+
+<script>
+   function clear(){
+        window.location.reload();
+   }
+   function AjaxBBSInsert(){
+    var sendData = new Object();
+        sendData.title = document.getElementById("title").value;        
+        sendData.contents = document.getElementById("contents").value;
+        
+        alert(JSON.stringify(sendData));
+        // GET 요청을 보낼 URL을 생성합니다.
+        
+        var url = "/todolist/AjaxBBSInsert";
+        $.ajax({
+            url : url
+            ,type : "POST"
+            ,data : sendData            
+            ,success : function(response){ // 성공    
+                //alert(response);
+                if(response.ret == "success"){
+                    //alert(JSON.stringify(response))
+                    window.location = "/todolist/bbs_list";
+                }else if(response.ret == "fail"){
+                   // alert(JSON.stringify(response))
+                    window.location = "/todolist/bbs_list";
+                }               
+            },
+            //요청 실패 시 실행될 콜백 함수 지정
+            error : function(xhr, status, error) {
+                console.log("error : " + error + ", status : " + status);
+            },
+            //요청 완료 시 실행될 콜백 함수 지정
+            //요청 성공/실패 여부와 관계없이 무조건 실행
+            complete : function(xhr, status) {                
+                console.log("complete");                
+            }           
+        });
+        
+   }
+</script>
+</html>

@@ -1,0 +1,68 @@
+
+<style>
+
+  .footer_comp {
+      /*background-color: #ffffff;
+      padding: 10px 20px;*/
+      text-align: left;
+      font-size: 12px; /* 글자 크기 조정 */
+      
+      width: 100%;
+      bottom: 0;
+  }
+  .footer_comp p {
+      margin: 5px 0;
+  }
+  .footer_comp .footer-button {
+        margin-top: 10px;
+    }
+    .footer_comp .footer-button button {
+        background-color: #202020;
+        color: white;
+        border: none;
+        padding: 3px 13px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 12px;
+        margin: 2px 1px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .footer_comp .footer-button button:hover {
+        background-color: #03adfc;
+    }
+</style>
+
+  <footer class="footer_comp">
+    <p>상호 : ㈜이터너스</p>
+    <p>대표자 : 도흥국 박수조</p>    
+    <p>사업자등록번호 : 443-87-02695 </p>
+    <p>주소 :  서울시 강남구 테헤란로4길 38-3, 7층 </p>
+    <p>전화번호: (+82)-2-595-4393</p>   
+    <p>privacy manager : khkim@eterners.com </p>
+    <div class="footer-button">
+      <button onclick="location.href='/istamp/privacypolicy'">개인보호정책</button>
+      <button onclick="location.href='/istamp/TermsofUse'">이용약관</button>
+      <button onclick="location.href='/istamp/withdrawal'">회원탈퇴</button>
+      <button onclick="restorePay();">구매복원</button>
+  </div>
+  <p>Copyright © 2024. All rights ETERNERS.inc reserved.</p>
+  </footer>
+
+  
+  <script>
+    function goURL(type){
+      if(type == 1){
+        window.location ='/istamp/privacypolicy';
+      }else if(type == 2){
+        window.location ='/istamp/TermsofUse';
+      }
+    }
+      
+  </script>
+  <script>
+    function restorePay(){
+      window.ReactNativeWebView.postMessage('restore');
+    }
+  </script>

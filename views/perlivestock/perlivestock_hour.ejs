@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="Donbang management system">
+    <meta name="keywords" content="Donbang, pig, cow">
+    <meta name="author" content="PING">
+    <title>축산의사결정시스템</title>
+    <link rel="apple-touch-icon" href="/static/app-assets/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/static/app-assets/images/ico/favicon.png">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
+
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/vendors/css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/vendors/css/tables/datatable/datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css">
+    <!-- END: Vendor CSS-->
+
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/components.css">
+    <!-- END: Theme CSS-->
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/core/colors/palette-gradient.css">
+    <!-- END: Page CSS-->
+
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/assets/css/style.css">
+    <!-- END: Custom CSS-->
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body class="vertical-layout vertical-menu 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns">
+
+    <!-- BEGIN: Header-->
+    <%- include('../common/header_menu') %>
+    <!-- END: Header-->
+
+    <!-- BEGIN: Main Menu-->
+    <%- include('../common/main_menu') %>
+    
+    <!-- END: Main Menu-->
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+                <div class="content-header-left col-md-6 col-12 mb-2">
+                    <h3 class="content-header-title">기간별 무게 집계</h3>                    
+                </div>                
+            </div>
+            <section id="chartjs-line-charts">
+                <!-- Line Chart -->
+                <div class="row">
+                    <div class="form-group col-1 mb-2">
+                        <label for="issueinput6">검색</label>
+                        <select id="kind" name="kind" class="form-control" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Status">
+                            <option value="weight">무게</option>
+                           <!-- <option value="eatfeed">급이량</option>
+                            <option value="eatwater">급수량</option> -->
+                        </select>
+                    </div>
+                    <div class="form-group col-1 mb-2">
+                        <label for="issueinput6">돈번호</label>
+                        <select id="tagnum" name="tagnum" class="form-control" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Status">
+                            <option value="">선택</option>
+                            <%
+                                for(var i= 0;i < retObject.livestock.length;i++){
+                                    %>
+                            <option value="<%=retObject.livestock[i].tagnum%>"><%=retObject.livestock[i].tagnum%></option>
+                            <%}%>
+                        </select>
+                    </div>
+                   
+                    <div class="form-group col-md-2 mb-2">
+                        <label for="issueinput3">시작일</label>
+                        <input type="date" id="strdate" class="form-control" name="strdate" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened">                         
+                    </div>                        
+                    <div class="form-group col-md-2 mb-2">
+                        <label for="issueinput4">종료일</label>
+                        <input type="date" id="enddate" class="form-control" name="enddate" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Fixed">                         
+                    </div>                        
+                    <div class="form-group col-md-2 mb-2">
+                        <button type="submit" class="btn btn-primary" onclick="formatDate()">
+                            <i class="la la-check-square-o"></i> 검색
+                        </button>                           
+                    </div>                  
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">가축 변동(2024-02-22~2024-06-29)</h4>
+                                <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>                                   
+                            </div>
+                            <div class="card-content collapse show">
+                                <div class="card-body chartjs">
+                                    <canvas id="line-chart" height="500"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="content-body">
+                <section id="search-api">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <!--
+                                <div class="card-header">
+                                    <h4 class="card-title"> 기간별 환경통계((2024-02-22~2024-06-29))</h4>
+                                    <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                                    <div class="heading-elements">                               
+                                      
+                                    </div>
+                                </div>
+                                -->
+                                <div class="card-content collapse show">
+                                    <div class="card-body">
+                                       <div class="table-responsive">
+                                            <table class="display table table-striped table-bordered search-api">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>축사방번호</th>
+                                                        <th>기기번호</th>
+                                                        <th>태그번호</th>                                                
+                                                        <th>측정일자</th>                                                
+                                                        <th>무게</th>                                                
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tabledata">                                          
+                                                <%
+                                                    for(var i=0;i<retObject.all.length;i++){
+                                                %>
+                                                <tr> 
+                                                    <th><%=i%></th>                                                
+                                                    <th><%=retObject.all[i].gwid%></th>
+                                                    <th><%=retObject.all[i].devid%></th>   
+                                                    <th><%=retObject.all[i].tagnum%></th>                                                
+                                                    <th><%=retObject.all[i].rcvtime%></th>
+                                                    <th><%=retObject.all[i].weight%></th>
+                                                </tr>
+                                                <%
+                                                    }
+                                                %>
+                                                   
+                                                </tbody>                                          
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!--/ Search API (regular expressions) table -->
+
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+    <!-- BEGIN: Footer-->
+    
+    <%- include('../common/footer') %>
+    <!-- END: Footer-->
+
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="/static/app-assets/vendors/js/vendors.min.js"></script>
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="/static/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+    <script src="/static/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="/static/app-assets/js/core/app-menu.js"></script>
+    <script src="/static/app-assets/js/core/app.js"></script>
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->
+    <script src="/static/app-assets/js/scripts/tables/datatables/datatable-api.js"></script>
+    <!-- END: Page JS-->
+    <script src="/static/app-assets/vendors/js/charts/chart.min.js"></script>
+    <script src="/static/app-assets/js/scripts/charts/chartjs/line/line.js"></script>
+
+</body>
+<!-- END: Body-->
+
+<script>
+    // Line chart
+// ------------------------------
+$(window).on("load", function(){
+   // var bbb = JSON.parse(aaa);
+  //  console.log("bbb:"+bbb)
+    initView();
+    //loadChart(retUnit);
+   // ReloadChart('<%=retObject.data%>', "temp");
+
+});
+
+
+</script>
+<script>
+
+    function initView(){
+        
+        document.getElementById("enddate").value = '2024-06-12'    
+        document.getElementById("strdate").value = '2024-05-13'    
+  
+        var tagnum = '53212'
+        var strdate = '2024-05-13'
+        var enddate = '2024-06-12'
+        sendAjax(tagnum,strdate,enddate);
+        
+    }
+    
+
+    function formatDate() {
+        var strdate = document.getElementById("strdate").value;
+        var enddate = document.getElementById("enddate").value;
+        var tagnum = document.getElementById("tagnum").value;    
+        
+
+        if (strdate &&  enddate ) {
+            var strdate = strdate.replace(/-/g, '');
+            var enddate = enddate.replace(/-/g, '');
+
+            var strdate =  strdate.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+            var enddate = enddate.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+           
+            sendAjax(tagnum,strdate,enddate);              
+        
+        } else {
+            alert("Please enter both date and time.");
+        }
+    }
+
+    var recvData = "";
+    function sendAjax(tagnum,strdate,enddate){
+        var url = "/perlivestock/get_feed_per_livestock_hour?tagnum="+tagnum+"&strdate="+strdate+"&enddate="+enddate;
+        //alert("url:"+url)
+        $.ajax({        
+            url: url,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                 
+                if(data.retcode = "success"){
+                    recvData = data.data;    
+                    ReloadChart(data.data, "weight");
+                
+                }
+            },
+            error: function() {
+                console.error('Error loading items');
+                loading = true;
+            }
+        });
+    }
+    function getYYYYMMDDHH(date,time ){
+        // 날짜는 YYYY-MM-DD 형태로 나오므로 '-'를 제거하여 YYYYMMDD로 변환
+        var formattedDate = date.replace(/-/g, '');
+        // 시간은 HH:MM 형식이므로 ':'을 제거하여 HH로 변환
+        var formattedTime = time.split(':')[0];
+        // YYYYMMDDHH 형식으로 결합
+        var formattedDateTime = formattedDate + formattedTime;
+        return formattedDateTime;    
+    }
+
+    function ReloadChart( data, kind){
+        //Get the context of the Chart canvas element we want to select
+        var ctx = $("#line-chart");
+
+        // Chart Options
+        var chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                position: 'bottom',
+            },
+            hover: {
+                mode: 'label'
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    gridLines: {
+                        color: "#f3f3f3",
+                        drawTicks: false,
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: '일'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    gridLines: {
+                        color: "#f3f3f3",
+                        drawTicks: false,
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: ''
+                    }
+                }]
+            },
+            title: {
+                display: true,
+                text: ''
+            }
+        };
+
+        var displaydata = "";
+        var datasets = "";
+        if(kind == "weight"){
+            displaydata = data.weight
+            datasets =  makedatasets("weight",displaydata)
+        }else if(kind == "eatfeed"){
+            displaydata = data.eatfeed
+            datasets =  makedatasets("eatfeed",displaydata)
+        }else if(kind == "eatwater"){
+            displaydata = data.eatwater
+            datasets =  makedatasets("eatwater",displaydata)
+        }
+
+        var chartData = {
+             labels: data.rcvday, 
+            datasets: datasets
+
+        };
+
+            var config = {
+                type: 'line',
+                options : chartOptions,
+                data : chartData
+            };
+
+            // Create the chart
+            var lineChart = new Chart(ctx, config);
+        }
+
+        // select 요소에 change 이벤트 리스너 추가
+        document.getElementById("kind").addEventListener("change", function() {
+            // 선택된 값 가져오기
+            var selectedValue = this.value;    
+            ReloadChart( recvData,selectedValue );  
+
+        });
+
+         // select 요소에 change 이벤트 리스너 추가
+         document.getElementById("tagnum").addEventListener("change", function() {
+            // 선택된 값 가져오기
+            var tagnum = this.value;   
+            var strdate = document.getElementById("strdate").value;
+            var enddate = document.getElementById("enddate").value;        
+
+            sendAjax(tagnum,strdate,enddate);
+
+
+        });
+        function makedatasets(label,displaydata){
+            var datasets = [];
+
+            var dataset = new Object();
+            dataset.label = label
+            dataset.data=displaydata    
+            dataset.fill = false
+            dataset.borderDash = [5, 5]
+            dataset.borderColor =  "#9C27B0"
+            dataset.pointBorderColor = "#9C27B0"
+            dataset.pointBackgroundColor = "#FFF"
+            dataset.pointBorderWidth = 2
+            dataset.pointHoverBorderWidth = 2
+            dataset.pointRadius = 4
+            datasets.push(dataset)
+
+            return datasets  
+        }
+        function makemultidatasets(label,displaydata1,displaydata2,displaydata3){
+            var datasets = [];
+
+            var dataset = new Object();
+            dataset.label = label
+            dataset.data=displaydata2    
+            dataset.fill = false
+            dataset.borderDash = [5, 5]
+            dataset.borderColor =  "#9C27B0"
+            dataset.pointBorderColor = "#9C27B0"
+            dataset.pointBackgroundColor = "#FFF"
+            dataset.pointBorderWidth = 2
+            dataset.pointHoverBorderWidth = 2
+            dataset.pointRadius = 4
+            datasets.push(dataset)
+
+            return datasets  
+        }
+        function ReloadTable(data){
+            var html_tag = '';
+            for(var i=0;i<data.all.length;i++){                
+
+                html_tag += ' <tr>'
+                +' <td>'+data.all[i].tb_env_seq+'</td>'
+                +' <td>'+data.all[i].gwid+'</td>'
+                +' <td>'+data.all[i].devid+'</td>'
+                +' <td>'+data.all[i].rcvtime+'</td>'
+                +' <td>'+data.all[i].time+'</td>'              
+                +' <td>'+data.all[i].temp+'</td>'
+                +' <td>'+data.all[i].humi+'</td>'
+                +' <td>'+data.all[i].co2+'</td>'
+                +' <td>'+data.all[i].nh3+'</td>'                
+                +'</tr>';
+            }
+            document.getElementById("tabledata").innerHTML = html_tag;
+        }
+      </script>
+
+
+</html>

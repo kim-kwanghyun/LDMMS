@@ -1,0 +1,143 @@
+<script>
+    window.onload = function () {			
+        // 현재 URL 가져오기
+        var currentUrl = window.location.href;
+        // URL에서 폴더(디렉토리) 부분 추출
+        var folderPath = new URL(currentUrl).pathname;
+        // 마지막 슬래시(/)를 제거하여 폴더 부분만 추출
+        var folder = folderPath.substring(1, folderPath.lastIndexOf('/'));
+        var folder2 = folderPath.substring(folderPath.lastIndexOf('/') + 1 );
+
+        // 추출된 폴더 경로 출력
+        console.log("현재 URL의 폴더:", folder);
+        console.log("현재 URL의 폴더:", folder2);        
+    }
+</script>
+    <div class="main-menu material-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
+        <div class="user-profile">
+            <div class="user-info text-center pb-2">
+                <img class="user-img img-fluid rounded-circle w-25 mt-2" src="" alt="" />
+                <div class="name-wrapper d-block dropdown mt-1">                    
+                    <span class="user-name"><%=userObject.comp_name%></span></a>
+                    <div class="text-light"><%=userObject.member_id%></div>                    
+                </div>
+            </div>
+        </div>
+       <%   
+        if(userObject.comp_seq == "0"){
+        }else{
+       %>
+        <div class="main-menu-content">
+            <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+                <li class=" nav-item"><a href="/index"><i class="material-icons">settings_input_svideo</i><span class="menu-title" data-i18n="Dashboard">Dashboard</span>
+                    </a>
+                    <ul class="menu-content">
+                        <li><a class="menu-item" href="/dash/product_dash" ><i class="material-icons"></i><span data-i18n="eCommerce">장비현황</span></a>
+                        </li>                   
+                    </ul>
+                </li>
+                <li class=" nav-item"><a href="#"><i class="material-icons">tv</i><span class="menu-title" data-i18n="Templates">장비등록</span></a>
+                    <ul class="menu-content">                                                                    
+                        <li><a class="menu-item" href="/stock/product_reg"><i class="material-icons"></i><span data-i18n="Crypto">장비등록</span></a>
+                        </li>
+                        <!-- <li class="active">-->
+                        <li><a class="menu-item" href="/stock/stock_list"><i class="material-icons"></i><span data-i18n="Sales">장비목록</span></a>
+                        </li>
+                        <li><a class="menu-item" href="/maintenance/maintenance_list" ><i class="material-icons"></i><span data-i18n="eCommerce">정비내역</span></a>
+                        </li>                                           
+                    </ul>
+                </li>                               
+                <li class=" nav-item"><a href="#"><i class="material-icons">tv</i><span class="menu-title" data-i18n="Templates">렌탈전자계약</span></a>
+                    <ul class="menu-content">
+                        <!--<li><a class="menu-item" href="/contract/form_wizard_01"><i class="material-icons"></i><span data-i18n="eCommerce">렌탈전자계약신청</span></a>
+                        </li>-->
+                        <li><a class="menu-item" href="/contract/rental_list"><i class="material-icons"></i><span data-i18n="Crypto">렌탈차량목록</span></a>
+                        </li>
+                        <li><a class="menu-item" href="/contract/contract_list"><i class="material-icons"></i><span data-i18n="Crypto">렌탈전자계약현황</span></a>
+                        </li>
+                       
+                    </ul>
+                </li>
+                <li class=" nav-item"><a href="#"><i class="material-icons">tv</i><span class="menu-title" data-i18n="Templates">중고거래전자계약</span></a>
+                    <ul class="menu-content">
+                        <!--<li><a class="menu-item" href="/junggosale/form_wizard_01"><i class="material-icons"></i><span data-i18n="eCommerce">중고전자계약신청</span></a>
+                        </li>-->
+                        <li><a class="menu-item" href="/junggosale/junggo_list"><i class="material-icons"></i><span data-i18n="Crypto">중고차량목록</span></a>
+                        
+                        <li><a class="menu-item" href="/junggosale/contract_list"><i class="material-icons"></i><span data-i18n="Crypto">중고전자계약현황</span></a>
+                        </li>
+                    </ul>
+                </li>
+                 <!--
+                <li class=" nav-item"><a href="#"><i class="material-icons">tv</i><span class="menu-title" data-i18n="Templates">장비재고관리</span></a>
+                    <ul class="menu-content">                     
+                        <li><a class="menu-item" href="/stock/product_shipping_reg"><i class="material-icons"></i><span data-i18n="eCommerce">출고등록</span></a>
+                        </li>
+                       
+                        <li><a class="menu-item" href="/stock/product_restore_reg"><i class="material-icons"></i><span data-i18n="Crypto">입고등록</span></a>
+                        </li>
+                     
+                                                                       
+                    </ul>
+                </li>
+                   -->
+                   <!--
+                <li class=" nav-item"><a href="#"><i class="material-icons">tv</i><span class="menu-title" data-i18n="Templates">정산관리</span></a>
+                    <ul class="menu-content">
+                        <li><a class="menu-item" href="/settlement/deposit_list"><i class="material-icons"></i><span data-i18n="eCommerce">입금내역</span></a>
+                        </li>
+                        <li><a class="menu-item" href="javascript:void(0);" onclick="alert('공사중');"><i class="material-icons"></i><span data-i18n="eCommerce">정비업체정산</span></a>
+                        </li>
+                    </ul>
+                </li>  
+                -->             
+                <li class=" nav-item"><a href="#"><i class="material-icons">tv</i><span class="menu-title" data-i18n="Templates">회원관리</span></a>
+                    <ul class="menu-content">
+                        <%
+                            if((userObject.member_gubun == "7")){
+                        %>                        
+                        
+                        <li><a class="menu-item" href="/comp/comp_list"><i class="material-icons"></i><span data-i18n="eCommerce">업체목록</span></a>
+                        </li>
+                        <li><a class="menu-item" href="/comp/comp_reg"><i class="material-icons"></i><span data-i18n="Crypto">업체등록</span></a>
+                        </li>  
+                        <%}%>
+                        <li><a class="menu-item" href="/comp/user_list"><i class="material-icons"></i><span data-i18n="eCommerce">사용자목록</span></a>
+                        </li>
+                        <%
+                            if((userObject.member_gubun == "3")||(userObject.member_gubun == "7")){
+                        %>                        
+                        <li><a class="menu-item" href="/member/account_list"><i class="material-icons"></i><span data-i18n="eCommerce">회원목록</span></a>
+                        </li>
+                        <%}%>
+
+
+                        <li><a class="menu-item" href="/member/account_setting"><i class="material-icons"></i><span data-i18n="Crypto">회원정보수정</span></a>
+                        </li>                        
+                        <li><a class="menu-item" href="/member/member_register"><i class="material-icons"></i><span data-i18n="Crypto">회원 등록</span></a>
+                        </li>                        
+                        <li><a class="menu-item" href="/member/login"><i class="material-icons"></i><span data-i18n="Crypto">로그인</span></a>
+                        </li>
+                    </ul>
+                </li>
+                
+            </ul>
+            <div>
+                <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
+                    <button type="submit" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1" onclick="goGonggo()" >
+                        광고문의</button>
+                    
+                </div>   
+            </div>
+        </div>
+       <%}%>
+       <script>
+            function goGonggo(){
+                window.location = "/adver/adver_reg"
+            }
+       </script>
+    </div>
+
+    
+
+    <!-- END: Main Menu-->

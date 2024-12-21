@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content=".">
+    <meta name="keywords" content="">
+    <meta name="author" content="PING co.">
+    <title>질문답변관리</title>
+    <link rel="apple-touch-icon" href="/static/app-assets/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/static/app-assets/images/ico/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
+
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/vendors/css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/vendors/css/calendars/fullcalendar.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/vendors/css/calendars/daygrid.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/vendors/css/calendars/timegrid.min.css">
+    <!-- END: Vendor CSS-->
+
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/components.css">
+    <!-- END: Theme CSS-->
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/core/colors/palette-gradient.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/plugins/calendars/fullcalendar.css">
+    <!-- END: Page CSS-->
+
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/assets/css/style.css">
+    <!-- END: Custom CSS-->
+    <style>
+        table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+        th, td {
+          padding: 8px;
+          border: 1px solid #ccc;
+          text-align: left;
+        }
+        th {
+          background-color: #f2f2f2;
+        }
+      </style>
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body class="vertical-layout vertical-menu 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns">
+
+
+    <!-- BEGIN: Header-->
+    <%- include('../common/header_menu') %>
+    <!-- END: Header-->
+
+
+    <!-- BEGIN: Main Menu-->
+    <%- include('../common/main_menu') %>
+
+    <!-- END: Main Menu-->
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+                <div class="content-header-left col-md-6 col-12 mb-2">
+                    <h3 class="content-header-title">질문답변관리</h3>
+                    <div class="row breadcrumbs-top">
+                        <div class="breadcrumb-wrapper col-12">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/">Home</a>
+                                </li>                               
+                                <li class="breadcrumb-item"><a href="#">질문답변관리</a>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="content-body">
+                <!-- Full calendar basic example section start -->
+                <section id="basic-examples">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">질문답변목록</h4>
+                                    <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                                    <div class="heading-elements">
+                                
+                                        <button type="submit" class="btn btn-primary" onclick="goReply(0)">
+                                            <i class="la la-check-square-o"></i> 추가
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-content collapse show">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="display table table-striped table-bordered search-api">
+                                                <thead>
+                                                    <tr>
+                                                        <th>번호</th>
+                                                        <th>질문제목</th>
+                                                        <th>질문</th>
+                                                        <th>답변</th>                                                        
+                                                        <th>등록자</th>
+                                                        <th>등록일</th>
+                                                        <th>답변자</th>
+                                                        <th>답변일</th>
+                                                        <th>답변관리</th>
+                                                        
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <%
+                                                     for(var i=0;i<retObject.data.length;i++){
+                                                        %>
+                                                    <tr>
+                                                        <td><%=retObject.data[i].bbs_seq%></td>
+                                                        <td><%=retObject.data[i].title%></td>
+                                                        <td><%=retObject.data[i].contents%></td>                                                        
+                                                        <td><%=retObject.data[i].reply%></td>
+                                                        <td><%=retObject.data[i].crdt_id%></td>
+                                                        <td><%=retObject.data[i].CRDT_DATE%></td>
+                                                        <td><%=retObject.data[i].mdfy_id%></td>
+                                                        <td><%=retObject.data[i].MDFY_DATE%></td>
+                                                        <td>
+                                                            <%
+                                                            if(userObject.member_gubun == "2"){
+                                                        %>
+                                                            <button type="button" class="btn btn-primary mr-1" onclick="goReply('<%=retObject.data[i].bbs_seq%>')">
+                                                                <i class="ft-x"></i> 답변
+                                                            </button>
+                                                            <%}%>
+                                                        </td>                                                      
+                                                                                            
+                                                    </tr>
+                                                    <%}%>
+                                                                                                    </tbody>                                               
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                     
+                                    
+                     
+                                        
+                    </div>
+                   
+                </section>
+                <!-- // Full calendar basic example section end -->
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+
+    <!-- BEGIN: Footer-->
+    <%- include('../common/footer') %>
+    <!-- END: Footer-->
+
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="/static/app-assets/vendors/js/vendors.min.js"></script>
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="/static/app-assets/vendors/js/extensions/moment.min.js"></script>
+    <script src="/static/app-assets/vendors/js/extensions/fullcalendar.min.js"></script>
+    <script src="/static/app-assets/vendors/js/extensions/daygrid.min.js"></script>
+    <script src="/static/app-assets/vendors/js/extensions/timegrid.min.js"></script>
+    <script src="/static/app-assets/vendors/js/extensions/interactions.min.js"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="/static/app-assets/js/core/app-menu.js"></script>
+    <script src="/static/app-assets/js/core/app.js"></script>
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->
+    <!--<script src="/static/app-assets/js/scripts/extensions/fullcalendar.js"></script>-->
+    <!-- END: Page JS-->
+
+</body>
+<!-- END: Body-->
+<script>        
+   
+
+</script>
+<script>
+    function goReply(bbs_seq){
+        if(bbs_seq == 0){
+            window.location ='/todolist/bbs_insert';
+        }else {
+            window.location ='/todolist/bbs_update?bbs_seq='+bbs_seq;
+        }
+    }
+</script>
+</html>

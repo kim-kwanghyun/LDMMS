@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="PIXINVENT">
+    <title>축산의사결정시스템</title>
+    <link rel="apple-touch-icon" href="/static/app-assets/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/static/app-assets/images/ico/favicon.png">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/fonts/material-icons/material-icons.css">
+
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/vendors/css/material-vendors.min.css">
+    <!-- END: Vendor CSS-->
+
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/material.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/components.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/material-extended.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/material-colors.css">
+    <!-- END: Theme CSS-->
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/core/menu/menu-types/material-vertical-menu-modern.css">
+    <!-- END: Page CSS-->
+
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/assets/css/style.css">
+    <!-- END: Custom CSS-->
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body class="vertical-layout vertical-menu-modern material-vertical-layout material-layout 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+    <!-- BEGIN: Header-->
+    <%- include('../common/header_menu') %>
+    <!-- END: Header-->
+    <!-- BEGIN: Main Menu-->
+    <%- include('../common/main_menu') %>
+    <!-- END: Main Menu-->
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+      
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-body">
+                <!-- line chart section start -->
+                <section id="chartjs-line-charts">
+                    <!-- Line Chart -->
+                    <div class="row">
+                        <div class="col-xl-2 col-lg-6 col-md-6 col-12">
+                            <div class="card pull-up" >
+                                <select id="kind" name="gwid" class="form-control" >                               
+                                    <option value="1">1</option>                                        
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-2 col-lg-6 col-md-6 col-12">                                    
+                            <div class="card pull-up" onclick="window.location='/donbang/donbanglist'">                            
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <div class="media d-flex">
+                                            <div class="align-self-center">
+                                                <i class="la la-user-md font-large-2 success"></i>
+                                            </div>
+                                            <div class="media-body text-right">
+                                                <h5 class="text-muted text-bold-500">전체 돈수</h5>
+                                                <h3 class="text-bold-600"><%=retObject.dashdata[0].livestock_cnt%></h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-lg-6 col-md-6 col-12">
+                            <div class="card pull-up" onclick="window.location='/perlivestock/perlivestock_hour'">
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <div class="media d-flex">
+                                            <div class="align-self-center">
+                                                <i class="la la-stethoscope font-large-2 warning"></i>
+                                            </div>
+                                            <div class="media-body text-right">
+                                                <h5 class="text-muted text-bold-500">축사평균무게</h5>
+                                                <h3 class="text-bold-600"><%=retObject.allAVG%>Kg</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>       
+                        <div class="col-xl-2 col-lg-6 col-md-6 col-12">
+                            <div class="card pull-up" onclick="window.location='/feed/abnormal1'">
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <div class="media d-flex">
+                                            <div class="align-self-center">
+                                                <i class="la la-stethoscope font-large-2 warning"></i>
+                                            </div>
+                                            <div class="media-body text-right">
+                                                <h5 class="text-muted text-bold-500">저성장개체수</h5>
+                                                <h3 class="text-bold-600"><%=retObject.dashdata[0].abnormal1_count%></h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>     
+                        <div class="col-xl-2 col-lg-6 col-md-6 col-12">
+                            <div class="card pull-up"  onclick="window.location='/feed/abnormal3'">
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <div class="media d-flex">
+                                            <div class="align-self-center">
+                                                <i class="la la-stethoscope font-large-2 warning"></i>
+                                            </div>
+                                            <div class="media-body text-right">
+                                                <h5 class="text-muted text-bold-500">저사료개체</h5>
+                                                <h3 class="text-bold-600"><%=retObject.dashdata[0].abnormal3_count%></h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>     
+                        <div class="col-xl-2 col-lg-6 col-md-6 col-12">
+                            <div class="card pull-up" onclick="window.location='/feed/abnormal4'">
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <div class="media d-flex">
+                                            <div class="align-self-center">
+                                                <i class="la la-stethoscope font-large-2 warning"></i>
+                                            </div>
+                                            <div class="media-body text-right">
+                                                <h5 class="text-muted text-bold-500">오늘 이상온도</h5>
+                                                <h3 class="text-bold-600">
+                                                    <% if(retObject.dashdata[0].abnormal4_count == 0){%>
+                                                        정상온도
+                                                    <%}else{%>
+                                                        비정상
+                                                    <%}%>
+                                                </h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                        <div class="col-xl-2 col-lg-6 col-md-6 col-12">
+                            <div class="card pull-up" onclick="window.location='/feed/abnormal5'">
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <div class="media d-flex">
+                                            <div class="align-self-center">
+                                                <i class="la la-stethoscope font-large-2 warning"></i>
+                                            </div>
+                                            <div class="media-body text-right">
+                                                <h5 class="text-muted text-bold-500">이상습도</h5>
+                                                <h3 class="text-bold-600">
+                                                    <% if(retObject.dashdata[0].abnormal5_count == 0){%>
+                                                        정상습도
+                                                    <%}else{%>
+                                                        비정상
+                                                    <%}%>
+                                                </h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                                    
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">월별가축 가격변동</h4>
+                                    <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                                    <div class="heading-elements">
+                                        <ul class="list-inline mb-0">
+                                            <% if(retObject.livestocklist_kind == '1'){%>
+                                            <button type="submit" class="btn btn-primary" onclick="window.location='/donbang/dash?kind=1'">
+                                                <%}else{%>
+                                                    <button type="submit" class="btn btn-secondary" onclick="window.location='/donbang/dash?kind=1'">
+                                                    <%}%>
+                                                <i class="la la-check-square-o"></i> 돼지
+                                            </button>    
+                                            <% if(retObject.livestocklist_kind == '2'){%>
+                                            <button type="submit" class="btn btn-primary" onclick="window.location='/donbang/dash?kind=2'">
+                                                <%}else{%>
+                                                    <button type="submit" class="btn btn-secondary" onclick="window.location='/donbang/dash?kind=2'">
+                                                    <%}%>
+                                                <i class="la la-check-square-o"></i> 소
+                                            </button>   
+                                            <!--
+                                            <select id="kind" name="kind" class="form-control" >   
+                                                <% if(retObject.livestocklist_kind == '1'){
+                                                    %>                         
+                                                    <option value="temp" selected>돼지</option>
+                                                    <option value="humi">소</option>  
+                                                <%}else{%>
+                                                    <option value="temp" >돼지</option>
+                                                    <option value="humi" selected>소</option>     
+                                                <%}%>                                           
+                                            </select>
+                                            --> 
+                                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>             
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-content collapse show">
+                                    <div class="card-body chartjs">
+                                        <canvas id="line-chart" height="500"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">축사 평균 무게</h4>
+                                    <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                                    <div class="heading-elements">
+                                        <ul class="list-inline mb-0">                                         
+                                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>                                           
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-content collapse show">
+                                    <div class="card-body chartjs">
+                                        <canvas id="line-chart1" height="500"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                
+                    <!-- Area Chart -->
+
+                        <div class="col-4" >
+                            <div class="card">
+                                <div class="card-header">
+                                    <a href="/perlivestock/perlivestock_hour"><h4 class="card-title">온도</h4></a>
+                                    <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                                    <div class="heading-elements">
+                                        <ul class="list-inline mb-0">
+                                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                            <li><a data-action="expand"><i class="ft-maximize"></i></a></li>             
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-content collapse show">
+                                    <div class="card-body chartjs">
+                                        <canvas id="line-chart2" height="500"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- // line chart section end -->
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+    <!-- BEGIN: Footer-->
+    <%- include('../common/footer') %>
+    <!-- END: Footer-->
+
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="/static/app-assets/vendors/js/material-vendors.min.js"></script>
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="/static/app-assets/vendors/js/charts/chart.min.js"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="/static/app-assets/js/core/app-menu.js"></script>
+    <script src="/static/app-assets/js/core/app.js"></script>
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->
+    <script src="/static/app-assets/js/scripts/pages/material-app.js"></script>
+    <!--<script src="/static/app-assets/js/scripts/charts/chartjs/line/line.js"></script>-->
+    <!-- <script src="/static/app-assets/js/scripts/charts/chartjs/line/line-area.js"></script>-->
+    <script src="/static/app-assets/js/scripts/charts/chartjs/line/line-logarithmic.js"></script>
+    <script src="/static/app-assets/js/scripts/charts/chartjs/line/line-multi-axis.js"></script>
+    <script src="/static/app-assets/js/scripts/charts/chartjs/line/line-skip-points.js"></script>
+    <script src="/static/app-assets/js/scripts/charts/chartjs/line/line-stacked-area.js"></script>
+    <!-- END: Page JS-->
+
+</body>
+<!-- END: Body-->
+
+<script>
+    // Line chart
+// ------------------------------
+// select 요소에 change 이벤트 리스너 추가
+document.getElementById("kind").addEventListener("change", function() {
+    // 선택된 값 가져오기
+    var kind = this.value;
+    alert(kind)
+    window.location = '/donbang/dash?kind='+kind;  
+
+});
+$(window).on("load", function(){
+      
+    LineChart();
+    Line1Chart();
+    Line2Chart();
+});
+
+function LineChart(){
+//Get the context of the Chart canvas element we want to select
+var ctx = $("#line-chart");
+
+// Chart Options
+var chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    legend: {
+        position: 'bottom',
+    },
+    hover: {
+        mode: 'label'
+    },
+    scales: {
+        xAxes: [{
+            display: true,
+            gridLines: {
+                color: "#f3f3f3",
+                drawTicks: false,
+            },
+            scaleLabel: {
+                display: true,
+                labelString: 'Month'
+            }
+        }],
+        yAxes: [{
+            display: true,
+            gridLines: {
+                color: "#f3f3f3",
+                drawTicks: false,
+            },
+            scaleLabel: {
+                display: true,
+                labelString: '만원'
+            }
+        }]
+    },
+    title: {
+        display: true,
+        text: ''
+    }
+};
+//alert( '<%=retObject.livestocklist_month%>')
+//alert( '<%=retObject.livestocklist_price%>')
+// Chart Data
+var chartData = {
+    labels:  <%=retObject.livestocklist_month%>,
+    datasets: 
+    [{
+        label: "돼지",
+        data: <%=retObject.livestocklist_price%>,
+        fill: false,
+        borderDash: [5, 5],
+        borderColor: "#9C27B0",
+        pointBorderColor: "#9C27B0",
+        pointBackgroundColor: "#FFF",
+        pointBorderWidth: 2,
+        pointHoverBorderWidth: 2,
+        pointRadius: 4,
+    }  
+   ]        
+};
+    var config = {
+        type: 'line',
+        // Chart Options
+        options : chartOptions,
+        data : chartData
+    };
+    var lineChart = new Chart(ctx, config);
+}
+function Line1Chart(){
+    var ctx1 = $("#line-chart1");
+    // Chart Options
+    var chartOptions1 = {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+            position: 'bottom',
+        },
+        hover: {
+            mode: 'label'
+        },
+        scales: {
+            xAxes: [{
+                display: true,
+                gridLines: {
+                    color: "#f3f3f3",
+                    drawTicks: false,
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: '일'
+                }
+            }],
+            yAxes: [{
+                display: true,
+                gridLines: {
+                    color: "#f3f3f3",
+                    drawTicks: false,
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'kg'
+                }
+            }]
+        },
+        title: {
+            display: true,
+            text: ''
+        }
+    };
+    //alert('<%=retObject.avg_weight_rcvtime[0]%>')
+ //   alert('<%=retObject.avg_weight_weight%>')
+    // Chart Data
+    var chartData1 = {    
+        labels: ['<%=retObject.avg_weight_rcvtime[0]%>', '<%=retObject.avg_weight_rcvtime[1]%>', '<%=retObject.avg_weight_rcvtime[2]%>', 
+            '<%=retObject.avg_weight_rcvtime[3]%>', '<%=retObject.avg_weight_rcvtime[4]%>', '<%=retObject.avg_weight_rcvtime[5]%>', 
+            '<%=retObject.avg_weight_rcvtime[6]%>', '<%=retObject.avg_weight_rcvtime[7]%>' ],
+        datasets: [{
+            label: "돼지",
+            data:['<%=retObject.avg_weight_weight[0]%>','<%=retObject.avg_weight_weight[1]%>','<%=retObject.avg_weight_weight[2]%>',
+                '<%=retObject.avg_weight_weight[3]%>','<%=retObject.avg_weight_weight[4]%>','<%=retObject.avg_weight_weight[5]%>',
+                '<%=retObject.avg_weight_weight[6]%>','<%=retObject.avg_weight_weight[7]%>'
+            ] ,
+            fill: false,
+            borderDash: [5, 5],
+            borderColor: "#9C27B0",
+            pointBorderColor: "#9C27B0",
+            pointBackgroundColor: "#FFF",
+            pointBorderWidth: 2,
+            pointHoverBorderWidth: 2,
+            pointRadius: 4,
+        }]
+    };
+    var config1 = {
+        type: 'line',
+        // Chart Options
+        options : chartOptions1,
+        data : chartData1
+    };
+    var lineChart1 = new Chart(ctx1, config1);
+}
+
+
+function Line2Chart(){
+      //Get the context of the Chart canvas element we want to select
+      //var ctx = $("#area-chart");
+      var ctx2 = $("#line-chart2");
+
+    // Chart Options
+    var chartOptions2 = {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+            position: 'bottom',
+        },
+        hover: {
+            mode: 'label'
+        },
+        scales: {
+            xAxes: [{
+                display: true,
+                gridLines: {
+                    color: "#f3f3f3",
+                    drawTicks: false,
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: '일'
+                }
+            }],
+            yAxes: [{
+                display: true,
+                gridLines: {
+                    color: "#f3f3f3",
+                    drawTicks: false,
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'temp'
+                }
+            }]
+        },
+        title: {
+            display: true,
+            text: ''
+        }
+    };
+
+    //alert('<%=retObject.rcvday[0]%>')
+ //   alert('<%=retObject.avg_weight_weight%>')
+    // Chart Data
+    var chartData2 = {    
+        labels: ['<%=retObject.rcvday[0]%>', '<%=retObject.rcvday[1]%>', '<%=retObject.rcvday[2]%>', 
+            '<%=retObject.rcvday[3]%>', '<%=retObject.rcvday[4]%>', '<%=retObject.rcvday[5]%>', 
+            '<%=retObject.rcvday[6]%>', '<%=retObject.rcvday[7]%>' ],
+        datasets: [{
+            label: "온도",
+            data:['<%=retObject.temp[0]%>','<%=retObject.temp[1]%>','<%=retObject.temp[2]%>',
+                '<%=retObject.temp[3]%>','<%=retObject.temp[4]%>','<%=retObject.temp[5]%>',
+                '<%=retObject.temp[6]%>','<%=retObject.temp[7]%>'
+            ] ,
+            fill: false,
+            borderDash: [5, 5],
+            borderColor: "#9C27B0",
+            pointBorderColor: "#9C27B0",
+            pointBackgroundColor: "#FFF",
+            pointBorderWidth: 2,
+            pointHoverBorderWidth: 2,
+            pointRadius: 4,
+        }]
+    };
+    var config2 = {
+        type: 'line',
+        // Chart Options
+        options : chartOptions2,
+        data : chartData2
+    };
+    var lineChart2 = new Chart(ctx2, config2);
+ 
+
+}
+</script>
+<script>
+    function goPage(){
+        window.location.location='/perlivestock/perlivestock_hour';
+    }
+ 
+</script>
+</html>

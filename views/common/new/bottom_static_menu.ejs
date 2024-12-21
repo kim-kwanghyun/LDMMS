@@ -1,0 +1,205 @@
+
+<nav class="nav__wrapper">
+  <ul class="nav__list">
+    <li class="nav__item">
+      <!-- <a href="/istamp/mypage" class="nav__btn f-white"  >-->
+        <a href="#" class="nav__btn f-white" onclick="mypage()"  >
+        <i class="fa-regular fa-user nav__icon"></i>
+        <span class="nav__text">My Profile</span>
+      </a>
+    </li>
+    <!--
+    <li class="nav__item">
+      <a href="#" class="nav__btn f-white" onclcik="search();">
+        <i class="fa-solid fa-magnifying-glass nav__icon"></i
+        ><span class="nav__text">Search</span>
+      </a>
+    </li>
+-->
+    <li class="nav__item">
+      <a href="#" class="nav__btn f-white"  onclick="request()">
+        <i class="fa-solid fa-message nav__icon"></i>
+        <span class="nav__text">Request</span>
+      </a>
+    </li>
+    <li class="nav__item">
+      <a href="#" class="nav__btn f-white"  onclick="gouploadcheck()">
+        <i class="fa-solid fa-circle-plus nav__icon"></i>
+        <span class="nav__text">Stam it</span></a
+      >
+    </li>
+  </ul>
+</nav>
+<script>
+  function gouploadcheck(){  
+    window.location ='/istamp/uploadcheck';
+  }
+
+  function goView(url){  
+      var memberid = '<%=userObject.member_id%>';
+      Android.showShareActivity(memberid,url);
+  }
+  function mypage(){
+      var memberid = '<%=userObject.member_id%>'; 
+      //alert("memberid:"+memberid);
+
+      if((memberid == '')||(memberid == null)||(memberid == 'undefined')){
+        Swal.fire({
+            title: 'i-STAM 등록시 사용한 이메일주소을 입력해주세요',
+            input: 'text',
+            inputPlaceholder: '',
+            showCancelButton: true,
+            confirmButtonText: 'Submit',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // 입력된 값 처리
+                const email = result.value;
+                if(email == ''){
+                }else{
+                  AjaxServer(2,'',email)
+                }
+            }
+        });        
+      }else{
+        window.location.href = "/istamp/istamp_mylist";
+      }
+  }
+ function getAllList(para,  url,istamp_list_seq){        
+      if(para =="all"){
+          window.location.href = "istamp_alllist";
+      }else  if(para =="my"){
+          window.location.href = "istamp_list";
+      }else  if(para =="view"){
+          console.log("url:"+url);
+          
+          var imgInfo = new Object();
+          imgInfo.url= url;
+          imgInfo.istamp_list_seq= istamp_list_seq;
+          //imgInfo.img_url = "https://allthemind.com/istamp/image/"+url+"/"+istamp_list_seq;
+          imgInfo.img_url = "/istamp/image/"+url+"/"+istamp_list_seq;
+         // imgInfo.img_url = url +"/"+istamp_list_seq;
+          console.log("imgInfo.img_url:"+imgInfo.img_url);
+          window.location.href = imgInfo.img_url
+      }
+  }
+  </script>
+    <script>
+      /**
+      * STAM요청
+      */
+      function callNoti(istamp_list_seq )
+      {
+          //var result = confirm("저장된 주소록을 이용해서 STAM 하시겠습니까?");
+
+       var memberid = '<%=userObject.member_id%>'; 
+//      alert("memberid:"+memberid)
+      if((memberid == "")||((memberid == 'undefinded'))){
+        Swal.fire({
+            title: 'i-STAM 등록시 사용할 이메일주소을 입력해주세요',
+            input: 'text',
+            inputPlaceholder: '',
+            showCancelButton: true,
+            confirmButtonText: 'Submit',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // 입력된 값 처리
+                const email = result.value;
+                if(email =''){
+                  Swal.fire({
+                    title: '등록',
+                    text: "이메일 등록을 하지 않을 경우 i-STAM 을 등록하실수 없습니다.",
+                    icon: 'info',
+                    confirmButtonText: 'OK'
+                  });
+
+                }else{
+                 AjaxServer(3,'',email)
+                }
+            }
+        });
+
+        
+      }else{
+        Android.callNotation(memberid);
+      }
+    
+    
+      }
+    </script>
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <script>
+      function AjaxServer(flag,tel,email) {     
+      var url = "/istamp/AjaxServer?flag="+flag+"&tel="+tel+"&email="+email+"&token_id="+'<%=userObject.token_id%>';
+        $.ajax({        
+          url: url,
+          method: 'GET',
+          dataType: 'json',
+          success: function(data) {
+            //alert(JSON.stringify(data));
+            //alert(data.ret);  
+            if(data.ret == "success"){
+              if(flag == 1){
+                window.location ='/istamp/istamp_list';
+              }else if(flag == 2){
+                var memberid = email; 
+                //Android.shareNotationPhoto(memberid);
+                window.location ='/istamp/uploadcheck';
+              } else if(flag == 3){
+                Android.callNotation(istamp_list_seq);
+              }
+            }
+
+          },
+          error: function() {
+              console.error('Error loading items');
+              loading = true;
+          }
+      });
+    }
+
+      function request(){
+        var member_mobile = '<%=userObject.member_mobile%>'; 
+        alert("member_mobile:"+member_mobile);
+
+        if((member_mobile == '')||(member_mobile == null)||(member_mobile == 'undefined')){
+
+          Swal.fire({
+              title: '공유받은 전화번호을 입력해주세요',
+              input: 'text',
+              inputPlaceholder: '',
+              showCancelButton: true,
+              confirmButtonText: 'Submit',
+              cancelButtonText: 'Cancel'
+          }).then((result) => {
+              if (result.isConfirmed) {
+                  // 입력된 값 처리
+                  const tel = result.value;
+                  if(tel == ''){
+                  }else{
+                    AjaxServer(1,tel,'');
+                    window.location ='/istamp/istamp_list';
+                  }
+              }
+          });
+        }else{
+          window.location ='/istamp/istamp_list';
+        }
+
+      }
+
+      function search(){
+        alert("search");
+        Swal.fire({
+                title: '로그인실패',
+                text: "로그인정보가 틀렸습니다.",
+                icon: 'info',
+                confirmButtonText: 'OK'
+        });
+      }
+    </script>

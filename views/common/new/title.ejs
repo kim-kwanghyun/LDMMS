@@ -1,0 +1,50 @@
+<style>
+  .chip {    
+    width: 100px;
+    height: 25px;
+}
+
+</style>
+<div class="appHeader">
+    <div class="left">
+        <a href="/istamp/istamp_alllist">
+            <img src="/static/assets/img/istamp/Logo_i-stam_black.png" alt="logo_image" width="100"/>
+          </a>
+    </div>
+    <div class="pageTitle">   
+      <div class="chip" onclick="goPay()">
+      <div class="chip" >
+        <span class="chip-label"> <div  id="amount"> <%=userObject.mileage%></div>    </span>
+      </div>      
+    </div>
+    </div> 
+    <div class="right">
+        <div class="logo__container" onclick="gowhatisistam()">
+            <img src="/static/newassets/asset/img/whyistam.png" alt=""  width="100"/>
+          </div> 
+         
+    </div>
+</div> 
+
+<script>
+    function gowhatisistam(){
+      window.location.href = '/istamp/whatisistam';
+    }
+    function goPay(){
+      window.location.href = '/pay/pay';
+    }    
+  </script>
+   <script>   
+      // Get the div element
+      const amountDiv = document.getElementById('amount');
+      
+      // Get the value from the div and convert it to a number
+      const amount = parseFloat(amountDiv.textContent);
+      
+      // Format the number as currency
+      const formattedAmount = new Intl.NumberFormat('en-US').format(amount);
+      
+      // Set the formatted value back to the div
+      amountDiv.textContent = formattedAmount + "STM";
+  
+</script>

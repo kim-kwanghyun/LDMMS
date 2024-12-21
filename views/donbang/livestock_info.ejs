@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="PIXINVENT">
+    <title>축산의사결정시스템</title>
+    <link rel="apple-touch-icon" href="/static/app-assets/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/static/app-assets/images/ico/favicon.png">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/fonts/material-icons/material-icons.css">
+
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/vendors/css/material-vendors.min.css">
+    <!-- END: Vendor CSS-->
+
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/material.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/components.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/material-extended.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/material-colors.css">
+    <!-- END: Theme CSS-->
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/core/menu/menu-types/material-vertical-menu-modern.css">
+    <!-- END: Page CSS-->
+
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/assets/css/style.css">
+    <!-- END: Custom CSS-->
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body class="vertical-layout vertical-menu-modern material-vertical-layout material-layout 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+    <!-- BEGIN: Header-->
+    <%- include('../common/header_menu') %>
+    <!-- END: Header-->
+
+
+    <!-- BEGIN: Main Menu-->
+    <%- include('../common/main_menu') %>
+
+
+    <!-- END: Main Menu-->
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+      
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-body">
+                <!-- line chart section start -->            
+                </div>
+                <div class="content-body">
+                    <section id="search-api">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="addr1">이메일</label>
+                                    <input type="text" id="member_id" class="form-control" placeholder="" name="member_id" value="<%=userObject.member_id%>" readonly>
+                                </div>
+                            </div>
+                        </div>                   
+                        <div class="row">
+                     
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="addr1">우편번호</label>                                    
+                                    <input type="text" id="sample6_postcode" class="form-control" placeholder="" name="sample6_postcode">
+                                    <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="addr1">주소</label>                                    
+                                    <input type="text" id="sample6_address" class="form-control" placeholder="" name="sample6_address">
+                                  
+                                </div>
+                            </div>
+                        </div>                   
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="addr1">나머지 주소</label>
+                                    <input type="text" id="sample6_extraAddress" class="form-control" placeholder="" name="sample6_extraAddress">
+                                    <input type="text" id="sample6_detailAddress" class="form-control" placeholder="" name="sample6_detailAddress">
+                                    
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="projectinput1">사료모델명 선택</label>
+                                    <!--
+                                    <select id="gwid" name="gwid" class="form-control">       
+                                        <option value="1">돼지</option>
+                                        <option value="2">소</option>                                    
+                                    </select>
+                                -->
+                                    <select id="mySelect"  name="gwid" class="form-control" multiple>
+                                        <%
+                                            for(var i=0;i<retObject.data.length;i++){
+                                        %>
+                                        <option value="<%=retObject.data[i].cd_val_name%>"><%=retObject.data[i].cd_type_desc%></option>
+                                        <%}%>>
+                                      </select>
+                                      <button onclick="getSelectedOptions()">사료선택</button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">                                    
+                                    <label for="projectinput1">선택한 사료</label>                                    
+                                    <pre id="feed_model"></pre>
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="row">
+                            <div class="form-actions text-center">
+                                <button type="button" class="btn btn-warning mr-1" onclick="clear()">
+                                    <i class="ft-x"></i> Cancel
+                                </button>
+                                <button type="submit" class="btn btn-primary" onclick="AjaxMemberUpdate();">
+                                    <i class="la la-check-square-o"></i> Save
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- // line chart section end -->
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+    <!-- BEGIN: Footer-->
+    <%- include('../common/footer') %>
+    <!-- END: Footer-->
+
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="/static/app-assets/vendors/js/material-vendors.min.js"></script>
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="/static/app-assets/vendors/js/charts/chart.min.js"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="/static/app-assets/js/core/app-menu.js"></script>
+    <script src="/static/app-assets/js/core/app.js"></script>
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->
+    <script src="/static/app-assets/js/scripts/pages/material-app.js"></script>
+    <!--<script src="/static/app-assets/js/scripts/charts/chartjs/line/line.js"></script>-->
+    <script src="/static/app-assets/js/scripts/charts/chartjs/line/line-area.js"></script>
+    <script src="/static/app-assets/js/scripts/charts/chartjs/line/line-logarithmic.js"></script>
+    <script src="/static/app-assets/js/scripts/charts/chartjs/line/line-multi-axis.js"></script>
+    <script src="/static/app-assets/js/scripts/charts/chartjs/line/line-skip-points.js"></script>
+    <script src="/static/app-assets/js/scripts/charts/chartjs/line/line-stacked-area.js"></script>
+    <!-- END: Page JS-->
+
+</body>
+    <script>
+        function clear(){
+            window.location.reload();
+        }
+        function AjaxMemberUpdate(){
+            var sendData = new Object();
+
+            sendData.feed_model = document.getElementById("feed_model").textContent;
+            sendData.postcode = document.getElementById("sample6_postcode").textContent;
+            sendData.address = document.getElementById("sample6_address").textContent;
+            sendData.extraAddress = document.getElementById("sample6_extraAddress").textContent;
+            sendData.detailAddress = document.getElementById("sample6_detailAddress").textContent;
+            
+        alert(JSON.stringify(sendData));
+        // GET 요청을 보낼 URL을 생성합니다.
+        var url = "/donbang/AjaxMemberUpdate";
+        $.ajax({
+            url : url
+            ,type : "POST"
+            ,data : sendData            
+            ,success : function(response){ // 성공    
+                //alert(response);
+                if(response.ret == "success"){
+                    //alert(JSON.stringify(response))
+                    window.location = "/donbang/livestock_info";
+                }else if(response.ret == "fail"){
+                   // alert(JSON.stringify(response))
+                    window.location = "/donbang/livestock_info";
+                }               
+            },
+            //요청 실패 시 실행될 콜백 함수 지정
+            error : function(xhr, status, error) {
+                console.log("error : " + error + ", status : " + status);
+            },
+            //요청 완료 시 실행될 콜백 함수 지정
+            //요청 성공/실패 여부와 관계없이 무조건 실행
+            complete : function(xhr, status) {                
+                console.log("complete");                
+            }           
+        });
+
+        }
+    </script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        function sample6_execDaumPostcode() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    var addr = ''; // 주소 변수
+                    var extraAddr = ''; // 참고항목 변수
+                    
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        addr = data.roadAddress;
+                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                        addr = data.jibunAddress;
+                    }
+    
+                    // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                    if(data.userSelectedType === 'R'){
+                        // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                            extraAddr += data.bname;
+                        }
+                        // 건물명이 있고, 공동주택일 경우 추가한다.
+                        if(data.buildingName !== '' && data.apartment === 'Y'){
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                        if(extraAddr !== ''){
+                            extraAddr = ' (' + extraAddr + ')';
+                        }
+                        // 조합된 참고항목을 해당 필드에 넣는다.
+                        document.getElementById("sample6_extraAddress").value = extraAddr;
+                    
+                    } else {
+                        document.getElementById("sample6_extraAddress").value = '';
+                    }
+    
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById('sample6_postcode').value = data.zonecode;
+                    document.getElementById("sample6_address").value = addr;
+                    // 커서를 상세주소 필드로 이동한다.
+                    document.getElementById("sample6_detailAddress").focus();
+                }
+            }).open();
+        }
+    </script>
+     <script>
+        function getSelectedOptions() {
+            var selectElement = document.getElementById('mySelect');
+            var selectedOptions = Array.from(selectElement.selectedOptions);
+            var selectedTextArray = selectedOptions.map(option => option.text);
+            alert(JSON.stringify(selectedTextArray));
+          
+            //document.getElementById('output').textContent = JSON.stringify(selectedTextArray, null, 2);
+            document.getElementById('feed_model').textContent = (selectedTextArray);
+        }
+      </script>
+</html>

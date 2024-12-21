@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="PIXINVENT">
+    <title>축산의사결정시스템</title>
+    <link rel="apple-touch-icon" href="/static/app-assets/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/static/app-assets/images/ico/favicon.png">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/fonts/material-icons/material-icons.css">
+
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/vendors/css/material-vendors.min.css">
+    <!-- END: Vendor CSS-->
+
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/material.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/components.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/material-extended.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/material-colors.css">
+    <!-- END: Theme CSS-->
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/core/menu/menu-types/material-vertical-menu-modern.css">
+    <!-- END: Page CSS-->
+
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/assets/css/style.css">
+    <!-- END: Custom CSS-->
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body class="vertical-layout vertical-menu-modern material-vertical-layout material-layout 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+
+    <!-- BEGIN: Header-->
+    <%- include('../common/header_menu') %>
+    <!-- END: Header-->
+
+
+    <!-- BEGIN: Main Menu-->
+    <%- include('../common/main_menu') %>
+
+
+    <!-- END: Main Menu-->
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+      
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-body">
+                <!-- line chart section start -->
+                <section id="chartjs-line-charts">
+                    <!-- Line Chart -->
+                    <div class="row">
+                        <div class="form-group col-1 mb-2">
+                            <label for="issueinput6">검색</label>
+                            <select id="kind" name="kind" class="form-control" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Status">
+                                <option value="temp">온도</option>
+                                <option value="humi">습도</option>
+                                <option value="co2">CO2</option>
+                                <option value="nh3">nh3</option>
+                                <option value="h2s">h2s</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-1 mb-2">
+                            <label for="issueinput6">축사번호</label>
+                            <select id="gwid" name="gwid" class="form-control" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Status">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                       
+                        <div class="form-group col-md-2 mb-2">
+                            <label for="issueinput3">시작일</label>
+                            <input type="date" id="strdate" class="form-control" name="strdate" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened">                         
+                        </div>
+                        <div class="form-group col-md-2 mb-2">
+                            <label for="issueinput3">시작시간</label>
+                             <input type="time" id="strtime" class="form-control" name="strtime" step="3600">
+                        </div>
+                        <div class="form-group col-md-2 mb-2">
+                            <label for="issueinput4">종료일</label>
+                            <input type="date" id="enddate" class="form-control" name="enddate" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Fixed">                         
+                        </div>
+                        <div class="form-group col-md-2 mb-2">
+                            <label for="issueinput4">종료시간</label>
+                            <input type="time" id="endtime" class="form-control" name="strtime" step="3600">
+                        </div>
+                        <div class="form-group col-md-2 mb-2">
+                            <button type="submit" class="btn btn-primary" onclick="formatDate()">
+                                <i class="la la-check-square-o"></i> 검색
+                            </button>                           
+                        </div>                    
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">월별가축 가격변동</h4>
+                                    <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>                                   
+                                </div>
+                                <div class="card-content collapse show">
+                                    <div class="card-body chartjs">
+                                        <canvas id="line-chart" height="500"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section id="list">
+                                    <!-- Both borders end-->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">                          
+                            <div class="card-content collapse show">                              
+                                <div class="table-responsive">
+                                    <table class="table table-bordered mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>축사방번호</th>
+                                                <th>측정일자</th>
+                                                <th>측정시간</th>
+                                                <th>평균급이량</th>
+                                                <th>평균급수량</th>
+                                                <th>평균온도</th>
+                                                <th>최저온도</th>
+                                                <th>최고온도</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tabledata">
+                                            <!--
+                                            <tr>
+                                                <td>John</td>
+                                                <td>Doe</td>
+                                                <td>john@example.com</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Mary</td>
+                                                <td>Moe</td>
+                                                <td>mary@example.com</td>
+                                            </tr>
+                                            <tr>
+                                                <td>July</td>
+                                                <td>Dooley</td>
+                                                <td>july@example.com</td>
+                                            </tr>
+                                        -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Both borders end -->
+                </section>
+                <!-- // line chart section end -->
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+    <!-- BEGIN: Footer-->
+    <%- include('../common/footer') %>
+    <!-- END: Footer-->
+
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="/static/app-assets/vendors/js/material-vendors.min.js"></script>
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="/static/app-assets/vendors/js/charts/chart.min.js"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="/static/app-assets/js/core/app-menu.js"></script>
+    <script src="/static/app-assets/js/core/app.js"></script>
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->
+    <script src="/static/app-assets/js/scripts/pages/material-app.js"></script>
+    <!--<script src="/static/app-assets/js/scripts/charts/chartjs/line/line.js"></script>-->
+    <script src="/static/app-assets/js/scripts/charts/chartjs/line/line-area.js"></script>
+    <script src="/static/app-assets/js/scripts/charts/chartjs/line/line-logarithmic.js"></script>
+    <script src="/static/app-assets/js/scripts/charts/chartjs/line/line-multi-axis.js"></script>
+    <script src="/static/app-assets/js/scripts/charts/chartjs/line/line-skip-points.js"></script>
+    <script src="/static/app-assets/js/scripts/charts/chartjs/line/line-stacked-area.js"></script>
+    <!-- END: Page JS-->
+
+</body>
+<!-- END: Body-->
+
+<script>
+    // Line chart
+// ------------------------------
+$(window).on("load", function(){
+   // var bbb = JSON.parse(aaa);
+  //  console.log("bbb:"+bbb)
+    initView();
+    //loadChart(retUnit);
+});
+
+
+</script>
+<script>
+    function initView(){
+            // 현재 날짜 가져오기
+        var today = new Date();
+        var yyyy = today.getFullYear();
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+        var dd = String(today.getDate()).padStart(2, '0');
+
+        // 현재 시간 가져오기
+        var now = new Date();
+        var hh = String(now.getHours()).padStart(2, '0');
+        var min = String(now.getMinutes()).padStart(2, '0');
+        var hours = now.getHours(); // 0 ~ 23 사이의 값 반환
+        var period = hours >= 12 ? '오후' : '오전';
+
+        // yyyy-mm-dd 형식으로 값 설정
+        var formattedDate = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("enddate").value = formattedDate;
+       // document.getElementById("endtime").value = period + " "+ hh+":"+min;
+       // alert(period + " "+ hh+":"+min)
+       document.getElementById("strdate").value = '2024-10-18'
+      // document.getElementById("strhour").value = '오전 10:00'
+      // document.getElementById("endhour").value = '오전 10:00'
+  
+        var gwid = '1'
+        var strdate = '20241018'
+        var strhour = '10'
+        var enddate = '20241020'
+        var endhour = '10'
+        sendAjax(gwid,strdate,strhour,enddate,endhour);
+        
+    }
+    function formatDate() {
+        var strdate = document.getElementById("strdate").value;
+        var strtime = document.getElementById("strtime").value;
+        var enddate = document.getElementById("enddate").value;
+        var endtime = document.getElementById("endtime").value;
+        var gwid = document.getElementById("gwid").value;
+        
+
+        if (strdate && strtime && enddate && endtime) {
+            var strdate = strdate.replace(/-/g, '');
+            var enddate = enddate.replace(/-/g, '');
+
+            var strhour = strtime.split(':')[0];
+            var endhour = endtime.split(':')[0];
+            
+           // var searchStr =  getYYYYMMDDHH(strdate, strtime)
+           // var searchEnd = getYYYYMMDDHH(enddate, endtime)
+            //alert("searchStr:"+searchStr)
+            //alert("searchEnd:"+searchEnd)
+
+            sendAjax(gwid,strdate,strhour,enddate,endhour);           
+        
+        } else {
+            alert("Please enter both date and time.");
+        }
+    }
+
+    var recvData = "";
+    var recvDate = "";
+    function sendAjax(gwid,strdate,strhour,enddate,endhour){
+        var url = "/feed/get_feed_stat_hour?gwid="+gwid+"&strdate="+strdate+"&strhour="+strhour+"&enddate="+enddate+"&endhour="+endhour;
+            //alert("url:"+url)
+            $.ajax({        
+                url: url,
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                   // alert(JSON.stringify(data));
+                    if(data.retcode = "success"){
+                    //  alert(data.data);
+                        recvData = data.data;    
+                       // alert(data.data.rcvday)                    
+                      ReloadChart(data.data, "eatfeed");
+                      ReloadTable(data.data);
+                    }
+                },
+                error: function() {
+                    console.error('Error loading items');
+                    loading = true;
+                }
+            });
+    }
+    function getYYYYMMDDHH(date,time ){
+        // 날짜는 YYYY-MM-DD 형태로 나오므로 '-'를 제거하여 YYYYMMDD로 변환
+        var formattedDate = date.replace(/-/g, '');
+        // 시간은 HH:MM 형식이므로 ':'을 제거하여 HH로 변환
+        var formattedTime = time.split(':')[0];
+        // YYYYMMDDHH 형식으로 결합
+        var formattedDateTime = formattedDate + formattedTime;
+        return formattedDateTime;    
+    }
+
+    function ReloadChart( data, kind){
+        //Get the context of the Chart canvas element we want to select
+        var ctx = $("#line-chart");
+
+        // Chart Options
+        var chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            legend: {
+                position: 'bottom',
+            },
+            hover: {
+                mode: 'label'
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    gridLines: {
+                        color: "#f3f3f3",
+                        drawTicks: false,
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Month'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    gridLines: {
+                        color: "#f3f3f3",
+                        drawTicks: false,
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Value'
+                    }
+                }]
+            },
+            title: {
+                display: true,
+                text: ''
+            }
+        };
+
+        var displaydata = "";
+        var datasets = "";
+        if(kind == "temp"){
+            //displaydata = data.temp
+            //datasets =  makedatasets("temp",displaydata)
+            datasets =  makemultidatasets("temp",data.temp_max,data.temp,data.temp_min)
+        }else if(kind == "humi"){
+            displaydata = data.humi
+            //datasets =  makedatasets("humi",displaydata)
+            datasets =  makemultidatasets("humi",data.humi_max,data.humi,data.humi_min)
+        
+        }else if(kind == "co2"){
+            displaydata = data.co2
+            //datasets =  makedatasets("co2",displaydata)
+            datasets =  makemultidatasets("co2",data.co2_max,data.co2,data.co2_min)
+        }else if(kind == "nh3"){
+            displaydata = data.nh3
+            //datasets =  makedatasets("nh3",displaydata)
+            datasets =  makemultidatasets("nh3",data.nh3_max,data.nh3,data.nh3_min)
+        }else if(kind == "h2s"){
+            displaydata = data.h2s
+            //datasets =  makedatasets("h2s",displaydata)
+            datasets =  makemultidatasets("h2s",data.h2s_max,data.h2s,data.h2s_min)
+        }
+       // alert(displaydata)
+        // Chart Data
+        var chartData = {
+                    labels: data.rcvday, 
+            datasets: datasets
+            /*[{
+                label: "돼지",
+                data:displaydata, //데이터          
+                fill: false,
+                borderDash: [5, 5],
+                borderColor: "#9C27B0",
+                pointBorderColor: "#9C27B0",
+                pointBackgroundColor: "#FFF",
+                pointBorderWidth: 2,
+                pointHoverBorderWidth: 2,
+                pointRadius: 4,
+            }]
+                */
+        };
+
+            var config = {
+                type: 'line',
+                options : chartOptions,
+                data : chartData
+            };
+
+            // Create the chart
+            var lineChart = new Chart(ctx, config);
+        }
+
+        // select 요소에 change 이벤트 리스너 추가
+        document.getElementById("kind").addEventListener("change", function() {
+          // 선택된 값 가져오기
+          var selectedValue = this.value;
+         // alert(selectedValue)
+    
+            ReloadChart( recvData,selectedValue );
+          
+
+
+          // 선택된 값을 출력
+          //document.getElementById("output").innerText = "You selected: " + selectedValue;
+        });
+        function makedatasets(label,displaydata){
+            var datasets = [];
+
+            var dataset = new Object();
+            dataset.label = label
+            dataset.data=displaydata    
+            dataset.fill = false
+            dataset.borderDash = [5, 5]
+            dataset.borderColor =  "#9C27B0"
+            dataset.pointBorderColor = "#9C27B0"
+            dataset.pointBackgroundColor = "#FFF"
+            dataset.pointBorderWidth = 2
+            dataset.pointHoverBorderWidth = 2
+            dataset.pointRadius = 4
+            datasets.push(dataset)
+
+            return datasets  
+        }
+        function makemultidatasets(label,displaydata1,displaydata2,displaydata3){
+            var datasets = [];
+
+            var dataset = new Object();
+            dataset.label = label+"_min"
+            dataset.data=displaydata1    
+            dataset.fill = false
+            dataset.borderDash = [5, 5]
+            dataset.borderColor =  "#9C27B0"
+            dataset.pointBorderColor = "#9C27B0"
+            dataset.pointBackgroundColor = "#FFF"
+            dataset.pointBorderWidth = 2
+            dataset.pointHoverBorderWidth = 2
+            dataset.pointRadius = 4
+            datasets.push(dataset)
+
+            var dataset = new Object();
+            dataset.label = label
+            dataset.data=displaydata2    
+            dataset.fill = false
+            dataset.borderDash = [5, 5]
+            dataset.borderColor =  "#9C27B0"
+            dataset.pointBorderColor = "#9C27B0"
+            dataset.pointBackgroundColor = "#FFF"
+            dataset.pointBorderWidth = 2
+            dataset.pointHoverBorderWidth = 2
+            dataset.pointRadius = 4
+            datasets.push(dataset)
+
+            var dataset = new Object();
+            dataset.label = label+"_max"
+            dataset.data=displaydata3    
+            dataset.fill = false
+            dataset.borderDash = [5, 5]
+            dataset.borderColor =  "#9C27B0"
+            dataset.pointBorderColor = "#9C27B0"
+            dataset.pointBackgroundColor = "#FFF"
+            dataset.pointBorderWidth = 2
+            dataset.pointHoverBorderWidth = 2
+            dataset.pointRadius = 4
+            datasets.push(dataset)
+
+            return datasets  
+        }
+        function ReloadTable(data){
+            var html_tag = '';
+            for(var i=0;i<data.all.length;i++){
+
+                html_tag += ' <tr>'
+                +' <td>'+data.all[i].stat_hour_seq+'</td>'
+                +' <td>'+data.all[i].gwid+'</td>'
+                +' <td>'+data.all[i].rcvday+'</td>'
+                +' <td>'+data.all[i].rcvhour+'</td>'
+                +' <td>'+data.all[i].eatfeed+'</td>'
+                +' <td>'+data.all[i].eatwater+'</td>'
+                +' <td>'+data.all[i].temp+'</td>'
+                +' <td>'+data.all[i].temp_min+'</td>'
+                +' <td>'+data.all[i].temp_max+'</td>'
+                +'</tr>';
+            }
+            document.getElementById("tabledata").innerHTML = html_tag;
+        }
+      </script>
+
+
+</html>

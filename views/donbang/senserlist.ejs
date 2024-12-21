@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="Donbang management system">
+    <meta name="keywords" content="Donbang, pig, cow">
+    <meta name="author" content="PING">
+    <title>축산의사결정시스템</title>
+    <link rel="apple-touch-icon" href="/static/app-assets/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/static/app-assets/images/ico/favicon.png">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
+
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/vendors/css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/vendors/css/tables/datatable/datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/vendors/css/tables/extensions/responsive.dataTables.min.css">
+    <!-- END: Vendor CSS-->
+
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/components.css">
+    <!-- END: Theme CSS-->
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="/static/app-assets/css/core/colors/palette-gradient.css">
+    <!-- END: Page CSS-->
+
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/assets/css/style.css">
+    <!-- END: Custom CSS-->
+
+</head>
+<!-- END: Head-->
+<style>
+    table td {
+    text-align: right;
+  }
+</style>
+<!-- BEGIN: Body-->
+
+<body class="vertical-layout vertical-menu 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns">
+
+    <!-- BEGIN: Header-->
+    <%- include('../common/header_menu') %>
+    <!-- END: Header-->
+
+    <!-- BEGIN: Main Menu-->
+    <%- include('../common/main_menu') %>
+    
+    <!-- END: Main Menu-->
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
+                <div class="content-header-left col-md-6 col-12 mb-2">
+                    <h3 class="content-header-title">환경센서관리</h3>                    
+                </div>
+                
+            </div>
+            <div class="content-body">
+                
+                <!-- Search API (regular expressions) table -->
+                <section id="search-api">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">센서목록</h4>
+                                    <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                                    <div class="heading-elements">                                                                        
+                                        <button type="submit" class="btn btn-primary" onclick="goInsert()">
+                                            <i class="la la-check-square-o"></i> 추가
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-content collapse show">
+                                    <div class="card-body">
+                                       <div class="table-responsive">
+                                            <table class="display table table-striped table-bordered search-api">
+                                                <thead>
+                                                    <tr>
+                                                        <th>GWID</th>
+                                                        <th>tagnum</th>
+                                                        <th>device ID</th>
+                                                        <th>센서종류</th>
+                                                        <th>등록일</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <%
+                                                        for(var i=0;i<retObject.data.length;i++){
+                                                    %>
+                                                    <tr>
+                                                        <td><%=retObject.data[i].gwid%></td>
+                                                        <td><%=retObject.data[i].tagnum%></td>
+                                                        <td><%=retObject.data[i].devid%></td>
+                                                        <td><%=retObject.data[i].SENSOR_TYPE%></td>
+                                                        <td><%=retObject.data[i].CRDT_DATE%></td>
+                                                    </tr>
+                                                    <%}%>                                                    
+                                                    
+                                                </tbody>
+                                               
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!--/ Search API (regular expressions) table -->
+
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+    <!-- BEGIN: Footer-->
+    
+    <%- include('../common/footer') %>
+    <!-- END: Footer-->
+
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="/static/app-assets/vendors/js/vendors.min.js"></script>
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="/static/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+    <script src="/static/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="/static/app-assets/js/core/app-menu.js"></script>
+    <script src="/static/app-assets/js/core/app.js"></script>
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->
+    <script src="/static/app-assets/js/scripts/tables/datatables/datatable-api.js"></script>
+    <!-- END: Page JS-->
+
+</body>
+<!-- END: Body-->
+<script>
+    function goInsert(){
+        window.location = "/donbang/senser_insert"
+    }
+ </script>
+</html>
